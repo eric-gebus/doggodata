@@ -27,23 +27,27 @@ export async function bark (req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // res.sendStatus(200);
+    res.sendStatus(200);
 
     const messageText = message.text.toLowerCase();
     let replyText = ''
 
     if (messageText === '/start') {
-      replyText = `Awroo! Welcome to DoggoBot 🐶!\nBark at me with words like "woof", "ruff", or "growl", and I'll tell you a dog fact!`
+      replyText = `Awroo! Welcome to DoggoBot 🐶!\nBark at me with words like "woof", "ruff", or "growl", and I'll tell you a dog fact!`;
     } else if (!allowedMessages.has(messageText)) {
-        replyText = `I don't speak hooman, rrruff!`
+      replyText = `I don't speak hooman, rrruff!`;
     } else {
+      try {
         const factRes = await fetch(`https://dogapi.dog/api/v2/facts`);
         const factData = await factRes.json();
         replyText = factData.data[0].attributes.body;
+      } catch (err) {
+        console.error("Failed to fetch dog fact:", err);
+        replyText = `Oops! I lost my dog facts 🐾`;
+      }
     }
 
-
-   const response = await fetch(`https://api.telegram.org/bot${process.env.API_KEY}/sendMessage`,
+   await fetch(`https://api.telegram.org/bot${process.env.API_KEY}/sendMessage`,
     {
       method: 'POST',
       headers: {
@@ -54,11 +58,6 @@ export async function bark (req: Request, res: Response): Promise<void> {
         text: replyText,
       })
     });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.log("Failed to send Telegram message:", errText)
-    }
 
   } catch (err) {
     console.log("Error :", err);
