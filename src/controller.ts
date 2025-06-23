@@ -10,6 +10,8 @@ interface Message {
   chat: Chat;
 }
 
+const allowedMessages: string[]= ['woof', 'waff', 'ruff', 'arf', 'wouf', 'waf', 'yap', 'growl', 'waf']
+
 export async function bark (req: Request, res: Response): Promise<void> {
   try {
 
@@ -20,7 +22,7 @@ export async function bark (req: Request, res: Response): Promise<void> {
 
     console.log("Received message:", message);
 
-    if (!message) {
+    if (!message || !allowedMessages.includes(message.text.toLowerCase())) {
       res.end();
       return
     }
