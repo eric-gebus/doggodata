@@ -10,7 +10,7 @@ interface Message {
   chat: Chat;
 }
 
-const allowedMessages: string[]= ['woof', 'waff', 'ruff', 'arf', 'wouf', 'waf', 'yap', 'growl', 'waf']
+const allowedMessages = new Set (['woof', 'waff', 'ruff', 'arf', 'wouf', 'waf', 'yap', 'growl'])
 
 export async function bark (req: Request, res: Response): Promise<void> {
   try {
@@ -18,6 +18,7 @@ export async function bark (req: Request, res: Response): Promise<void> {
     if (!process.env.API_KEY) {
       throw new Error('Missing Telegram API key');
     }
+
     const { message } = req.body as { message: Message };
 
     console.log("Received message:", message);
@@ -27,7 +28,24 @@ export async function bark (req: Request, res: Response): Promise<void> {
       return
     }
 
-    if (!allowedMessages.includes(message.text.toLowerCase())) {
+    const messageText = message.text.toLowerCase();
+
+    if (messageText === '/start') {
+      await fetch(`https://api.telegram.org/bot${process.env.API_KEY}/sendMessage`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: message.chat.id,
+          text: `Awroo! Welcome to DoggoBot 🐶!\Bark at me with words like "woof", "ruff", or "growl", and I'll tell you a dog fact!`,
+        })
+      });
+    return;
+  }
+
+    if (!allowedMessages.has(messageText)) {
         await fetch(`https://api.telegram.org/bot${process.env.API_KEY}/sendMessage`,
         {
           method: 'POST',
@@ -38,9 +56,8 @@ export async function bark (req: Request, res: Response): Promise<void> {
             chat_id: message.chat.id,
             text: `I don't speak hooman, rrruff!`,
           })
-        }
-      )
-      return
+        });
+      return;
     }
 
     const factRes = await fetch(`https://dogapi.dog/api/v2/facts`);
@@ -57,8 +74,7 @@ export async function bark (req: Request, res: Response): Promise<void> {
           chat_id: message.chat.id,
           text: factText,
         })
-      }
-    )
+      })
 
     if (!response.ok) {
       const errorDetails = await response.text();
