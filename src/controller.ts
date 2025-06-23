@@ -31,7 +31,7 @@ export async function bark (req: Request, res: Response): Promise<void> {
     let replyText = ''
 
     if (messageText === '/start') {
-      replyText = `Awroo! Welcome to DoggoBot 🐶!\Bark at me with words like "woof", "ruff", or "growl", and I'll tell you a dog fact!`
+      replyText = `Awroo! Welcome to DoggoBot 🐶!\nBark at me with words like "woof", "ruff", or "growl", and I'll tell you a dog fact!`
     } else if (!allowedMessages.has(messageText)) {
       replyText = `I don't speak hooman, rrruff!`
     } else {
