@@ -18,3 +18,5 @@ app.listen(PORT, () => {
   console.log(`POST /new-message`);
   console.log(`GET  /debug-test`);
 });
+
+export default app;
