@@ -20,6 +20,8 @@ export async function bark (req: Request, res: Response): Promise<void> {
 
     const { message } = req.body as { message: Message };
 
+    console.log(message)
+
     if (!message || !message.text || !message.chat || !message.chat.id) {
       res.sendStatus(200);
       return;
