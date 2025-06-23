@@ -21,7 +21,7 @@ export async function bark (req: Request, res: Response) {
 
     const factRes = await fetch(`https://dogapi.dog/api/v2/facts`);
     const factData = await factRes.json();
-    const factText = factData.data.attributes.body;
+    const factText = factData.data[0].attributes.body;
 
     const response = await fetch(`https://api.telegram.org/bot${API_KEY}/sendMessage`,
       {
