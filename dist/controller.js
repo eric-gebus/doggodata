@@ -5,12 +5,13 @@ const API_KEY = process.env.API_KEY;
 async function bark(req, res) {
     try {
         const { message } = req.body;
-        if (!message || message.text.toLowerCase() !== 'bark') {
+        console.log("Received message:", message);
+        if (!message || message.text?.trim().toLowerCase() !== 'bark') {
             return res.end();
         }
         const factRes = await fetch(`https://dogapi.dog/api/v2/facts`);
         const factData = await factRes.json();
-        const factText = factData.data.attributes.body;
+        const factText = factData.data[0].attributes.body;
         const response = await fetch(`https://api.telegram.org/bot${API_KEY}/sendMessage`, {
             method: 'POST',
             headers: {
@@ -29,6 +30,7 @@ async function bark(req, res) {
         return data;
     }
     catch (err) {
-        res.status(400).json({ message: `Error: ${err}` });
+        console.error("Bark handler error:", err);
+        res.status(500).json({ message: `Error: ${err}` });
     }
 }
