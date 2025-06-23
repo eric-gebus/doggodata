@@ -13,9 +13,4 @@ app.use((req, res) => {
   res.status(404).send('Route not found');
 });
 
-app.listen(config.port, () => {
-  console.log(`Listening on port ${config.port}`)
-})
-
-
-module.exports = app;
+export default app;
