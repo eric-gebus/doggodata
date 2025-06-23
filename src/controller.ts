@@ -22,8 +22,24 @@ export async function bark (req: Request, res: Response): Promise<void> {
 
     console.log("Received message:", message);
 
-    if (!message || !allowedMessages.includes(message.text.toLowerCase())) {
+    if (!message) {
       res.end();
+      return
+    }
+
+    if (!allowedMessages.includes(message.text.toLowerCase())) {
+        await fetch(`https://api.telegram.org/bot${process.env.API_KEY}/sendMessage`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            chat_id: message.chat.id,
+            text: `I don't speak hooman, rrruff!`,
+          })
+        }
+      )
       return
     }
 
