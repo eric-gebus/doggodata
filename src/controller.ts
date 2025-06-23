@@ -14,9 +14,10 @@ interface Message {
 export async function bark (req: Request, res: Response) {
   try {
     const { message } = req.body as { message: Message };
+    console.log("Received message:", message);
 
-    if (!message || message.text.toLowerCase() !== 'bark') {
-      return res.end()
+    if (!message || message.text?.trim().toLowerCase() !== 'bark') {
+      return res.end();
     }
 
     const factRes = await fetch(`https://dogapi.dog/api/v2/facts`);
@@ -45,7 +46,8 @@ export async function bark (req: Request, res: Response) {
     return data;
 
   } catch (err) {
-    res.status(400).json({message:`Error: ${err}`})
+    console.error("Bark handler error:", err);
+    res.status(500).json({ message: `Error: ${err}` });
   }
 }
 
