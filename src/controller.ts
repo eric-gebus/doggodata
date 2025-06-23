@@ -20,6 +20,7 @@ export async function bark (req: Request, res: Response): Promise<void> {
 
     if (!message) {
       res.end();
+      return
     }
 
     // const factRes = await fetch(`https://dogapi.dog/api/v2/facts`);
