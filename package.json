@@ -1,0 +1,26 @@
+{
+  "name": "doggodata",
+  "version": "1.0.0",
+  "description": "Bot givings random dog facts",
+  "homepage": "https://github.com/eric-gebus/doggodata#readme",
+  "bugs": {
+    "url": "https://github.com/eric-gebus/doggodata/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eric-gebus/doggodata.git"
+  },
+  "license": "ISC",
+  "author": "eric-gebus",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
