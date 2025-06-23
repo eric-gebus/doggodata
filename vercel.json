@@ -9,12 +9,8 @@
   "routes": [
     {
       "src": "/new-message",
-      "dest": "api/index.ts"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "api/index.ts",
-      "status": 404
+      "dest": "/api/index.ts",
+      "methods": ["POST"]
     }
   ]
 }

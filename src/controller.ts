@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-const API_KEY = process.env.API_KEY
 
 // interface Chat {
 //   id: string;
@@ -13,6 +12,10 @@ const API_KEY = process.env.API_KEY
 
 export async function bark (req: Request, res: Response): Promise<void> {
   try {
+
+    if (!process.env.API_KEY) {
+      throw new Error('Missing Telegram API key');
+    }
     // const { message } = req.body as { message: Message };
     const { message } = req.body;
 
@@ -40,8 +43,10 @@ export async function bark (req: Request, res: Response): Promise<void> {
     //   }
     // )
 
+    const telegramUrl = `https://api.telegram.org/bot${process.env.API_KEY}/sendMessage`;
+    console.log("Calling:", telegramUrl);  // Debug log
 
-    const response = await fetch(`https://api.telegram.org/bot${API_KEY}/sendMessage`,
+    const response = await fetch(telegramUrl,
       {
         method: 'POST',
         headers: {
@@ -55,11 +60,11 @@ export async function bark (req: Request, res: Response): Promise<void> {
     )
 
     if (!response.ok) {
-      throw new Error (`HTTP error status: ${response.status}`)
+      const errorDetails = await response.text();
+      throw new Error(`Telegram API error: ${response.status} - ${errorDetails}`);
     };
 
-    const data = await response.json();
-    res.end("ok");
+    res.status(200).send('Message sent successfully');
 
   } catch (err) {
     console.log("Error :", err);
