@@ -13,6 +13,14 @@ doggoData is your fun Telegram buddy who loves dog facts. Just “bark” at him
 
 ## Installation
 
+### Set up your bot 
+- Open telegram on your smartphone.
+- Search for the “botfather” telegram bot.
+- Type /help to see all possible commands.
+- Click on or type /newbot to create a new bot.
+- Follow instructions and make a new screen name (anything you want) and username (needs to be unique) for your bot.
+- Retrieve the API token generated
+
 ### Clone the repository
 
 ```
@@ -58,6 +66,7 @@ npx ngrok http 3000
 curl -F "url=https://abc123.ngrok.io/new-message" \
 https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook
 ```
+
 
 ### Deploy to Vercel
 - Push your code to GitHub.
